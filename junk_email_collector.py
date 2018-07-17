@@ -2,15 +2,14 @@
 import hashlib
 from imbox import Imbox
 import os
-import getpass
-import socket
+from socket import gaierror
 
 class JunkEmailCollector:
     # Init object for connecting to email account and getting junk folder
-    def __init__(self, imap_server, email_address, junk_folder):
+    def __init__(self, imap_server, email_address, password, junk_folder):
         self.imap_server = imap_server
         self.email_address = email_address
-        self.password = getpass.getpass('Please enter your email password:')
+        self.password = password
 
         # Specify the junk folder on the account, usually 'Junk' or 'Spam'
         self.junk_folder = junk_folder
@@ -54,6 +53,6 @@ class JunkEmailCollector:
 
                     # Mark the message as read
                     imbox.mark_seen(uid)
-        except socket.gaierror as e:
+        except gaierror as e:
             print(f'Error connecting: {e} \n\tCheck your creds or imap server.')
             return
